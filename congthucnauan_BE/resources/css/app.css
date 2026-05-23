@@ -1,0 +1,337 @@
+/* Main Styles for Cooking Recipes Website */
+
+/* General styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+}
+
+/* Header & Navbar */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.2rem;
+    white-space: nowrap;
+    margin-right: 1.5rem;
+}
+
+.navbar .nav-link {
+    white-space: nowrap;
+    padding: 0.5rem 0.8rem;
+}
+
+.navbar-nav {
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+@media (min-width: 992px) {
+    .navbar-expand-lg .navbar-nav {
+        align-items: center;
+    }
+    
+    .navbar .container {
+        max-width: 100%;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+    
+    .navbar .d-flex {
+        width: auto;
+    }
+    
+    .navbar-collapse {
+        flex-wrap: nowrap;
+    }
+}
+
+/* Home page jumbotron */
+.jumbotron {
+    background-image: url('http://localhost:8000/img/congthucnauan.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.jumbotron::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 0.3rem;
+}
+
+.jumbotron .container {
+    position: relative;
+}
+
+/* Card styles */
+.card {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Recipe card image */
+.recipe-thumbnail {
+    height: 180px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.recipe-full-img {
+    height: 400px;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Footer */
+footer {
+    margin-top: 2rem;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.social-links a {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    text-align: center;
+    line-height: 32px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: background-color 0.3s;
+}
+
+.social-links a:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Payment methods */
+.payment-methods {
+    margin-bottom: 1rem;
+}
+
+.payment-method-item {
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    transition: background-color 0.2s;
+}
+
+.payment-method-item:hover {
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+.payment-method-item.active {
+    background-color: rgba(13, 110, 253, 0.1);
+    border-color: #0d6efd;
+}
+
+/* Admin dashboard */
+.card-subtitle {
+    opacity: 0.7;
+}
+
+/* Recipe detail page */
+.recipe-meta {
+    margin-bottom: 20px;
+    color: #6c757d;
+}
+
+/* Rating stars */
+.rating-stars i {
+    cursor: pointer;
+    color: #ccc;
+}
+
+.rating-stars i.active {
+    color: #ffc107;
+}
+
+/* Profile page */
+.user-recipes .list-group-item {
+    transition: background-color 0.3s;
+}
+
+.user-recipes .list-group-item:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .recipe-full-img {
+        height: 250px;
+    }
+    
+    .jumbotron {
+        text-align: center;
+    }
+}
+
+/* Footer custom styles */
+.footer-link {
+    transition: all 0.3s ease;
+}
+
+.footer-link:hover {
+    color: white !important;
+    padding-left: 5px;
+}
+
+.social-icon-link {
+    width: 36px;
+    height: 36px;
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.social-icon-link:hover {
+    background-color: var(--bs-primary);
+    color: white;
+    transform: translateY(-3px);
+}
+
+.footer-newsletter .form-control {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.footer-newsletter .form-control::placeholder {
+    color: rgba(255,255,255,0.5);
+}
+
+.footer-newsletter .form-control:focus {
+    background-color: rgba(255,255,255,0.15);
+    color: white;
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Alert animations */
+.alert {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading spinner */
+.spinner-border-custom {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Course card styles */
+.course-card {
+    transition: all 0.3s ease;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.course-thumbnail {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Forum styles */
+.forum-post {
+    transition: all 0.2s ease;
+}
+
+.forum-post:hover {
+    background-color: #f8f9fa;
+}
+
+.forum-tag {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    margin: 0.25rem;
+    background-color: #e9ecef;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    text-decoration: none;
+    color: #495057;
+    transition: all 0.2s ease;
+}
+
+.forum-tag:hover {
+    background-color: #0d6efd;
+    color: white;
+}
+
+/* Utility classes */
+.text-truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.text-truncate-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* Footer Styles */
+.footer-link {
+    transition: all 0.3s ease;
+}
+
+.footer-link:hover {
+    color: white !important;
+    padding-left: 5px;
+}
+
+.social-icon-link {
+    width: 36px;
+    height: 36px;
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.social-icon-link:hover {
+    background-color: var(--bs-primary);
+    color: white;
+    transform: translateY(-3px);
+}
+
+.footer-newsletter .form-control {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.footer-newsletter .form-control::placeholder {
+    color: rgba(255,255,255,0.5);
+}
