@@ -31,6 +31,10 @@ class User extends Authenticatable
         'address',
         'avatar',
         'role',
+        'email_verified_at',
+        'email_verification_code',
+        'email_verification_code_expires_at',
+        'is_email_verified',
     ];
 
     /**
@@ -52,6 +56,8 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'email_verification_code_expires_at' => 'datetime',
+            'is_email_verified' => 'boolean',
             'password' => 'hashed',
         ];
     }

@@ -7,9 +7,11 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\UpdateProfileRequest;
 use App\Http\Requests\Auth\ChangePasswordRequest;
+use App\Mail\EmailVerificationCode;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -19,6 +21,7 @@ class AuthController extends Controller
      */
     public function register(RegisterRequest $request)
     {
+        $verificationCode = rand(100000, 999999);
 
         $user = User::create([
             'name' => $request->name,
@@ -26,21 +29,23 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
             'address' => $request->address,
-            'role' => 'user'
+            'role' => 'user',
+            'email_verification_code' => $verificationCode,
+            'email_verification_code_expires_at' => now()->addMinutes(5),
+            'is_email_verified' => false,
         ]);
 
-        $token = $user->createToken('auth-token')->plainTextToken;
+        Mail::to($user->email)->send(new EmailVerificationCode($user->name, $verificationCode));
 
         return response()->json([
-            'message' => 'Đăng ký thành công',
+            'message' => 'Đăng ký thành công. Vui lòng kiểm tra email để xác thực tài khoản.',
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
                 'role' => $user->role,
                 'avatar' => $user->avatar
-            ],
-            'token' => $token
+            ]
         ], 201);
     }
 
@@ -91,6 +96,91 @@ class AuthController extends Controller
                 'permissions' => $permissions
             ],
             'token' => $token
+        ]);
+    }
+
+    /**
+     * Verify email with code
+     */
+    public function verifyEmail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'code' => 'required|string|size:6',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            throw ValidationException::withMessages([
+                'email' => ['Email không tồn tại.']
+            ]);
+        }
+
+        if ($user->is_email_verified) {
+            return response()->json([
+                'message' => 'Email đã được xác thực trước đó.'
+            ]);
+        }
+
+        if ($user->email_verification_code !== $request->code) {
+            throw ValidationException::withMessages([
+                'code' => ['Mã xác thực không đúng.']
+            ]);
+        }
+
+        if ($user->email_verification_code_expires_at && now()->gt($user->email_verification_code_expires_at)) {
+            throw ValidationException::withMessages([
+                'code' => ['Mã xác thực đã hết hạn. Vui lòng gửi lại.']
+            ]);
+        }
+
+        $user->update([
+            'is_email_verified' => true,
+            'email_verified_at' => now(),
+            'email_verification_code' => null,
+            'email_verification_code_expires_at' => null,
+        ]);
+
+        return response()->json([
+            'message' => 'Xác thực email thành công.'
+        ]);
+    }
+
+    /**
+     * Resend verification code
+     */
+    public function resendVerificationCode(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            throw ValidationException::withMessages([
+                'email' => ['Email không tồn tại.']
+            ]);
+        }
+
+        if ($user->is_email_verified) {
+            return response()->json([
+                'message' => 'Email đã được xác thực.'
+            ]);
+        }
+
+        $verificationCode = rand(100000, 999999);
+
+        $user->update([
+            'email_verification_code' => $verificationCode,
+            'email_verification_code_expires_at' => now()->addMinutes(5),
+        ]);
+
+        Mail::to($user->email)->send(new EmailVerificationCode($user->name, $verificationCode));
+
+        return response()->json([
+            'message' => 'Đã gửi lại mã xác thực qua email.'
         ]);
     }
 
