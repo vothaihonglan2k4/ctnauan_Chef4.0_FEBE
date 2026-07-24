@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Recipe;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -23,6 +24,21 @@ class ChatbotController extends Controller
             'message.required' => 'Vui lòng nhập nội dung cần hỏi.',
             'message.max' => 'Tin nhắn quá dài. Vui lòng rút gọn câu hỏi.',
         ]);
+
+        $dateTimeReply = $this->dateTimeReply($validated['message']);
+        if ($dateTimeReply) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Chatbot đã phản hồi thành công.',
+                'data' => [
+                    'reply' => $dateTimeReply,
+                    'sources' => [
+                        'recipes' => [],
+                        'courses' => [],
+                    ],
+                ],
+            ]);
+        }
 
         $apiKey = config('services.groq.key');
         $baseUrl = rtrim(config('services.groq.base_url') ?: 'https://api.groq.com/openai/v1', '/');
@@ -115,6 +131,40 @@ class ChatbotController extends Controller
                 'message' => 'Có lỗi xảy ra khi kết nối chatbot. Vui lòng thử lại sau.',
             ], 500);
         }
+    }
+
+    private function dateTimeReply(string $message): ?string
+    {
+        $message = mb_strtolower(trim($message));
+        $asksTime = preg_match('/\b(mấy giờ|may gio|bao nhiêu giờ|bao nhieu gio|giờ hiện tại|gio hien tai|bây giờ là mấy giờ|bay gio la may gio)\b/u', $message) === 1;
+        $asksDate = preg_match('/\b(hôm nay ngày mấy|hom nay ngay may|ngày hôm nay|ngay hom nay|hôm nay là ngày bao nhiêu|hom nay la ngay bao nhieu|ngày hiện tại|ngay hien tai|thứ mấy|thu may)\b/u', $message) === 1;
+
+        if (!$asksTime && !$asksDate) {
+            return null;
+        }
+
+        $now = Carbon::now('Asia/Ho_Chi_Minh');
+        $weekdays = [
+            Carbon::SUNDAY => 'Chủ nhật',
+            Carbon::MONDAY => 'Thứ Hai',
+            Carbon::TUESDAY => 'Thứ Ba',
+            Carbon::WEDNESDAY => 'Thứ Tư',
+            Carbon::THURSDAY => 'Thứ Năm',
+            Carbon::FRIDAY => 'Thứ Sáu',
+            Carbon::SATURDAY => 'Thứ Bảy',
+        ];
+        $date = $weekdays[$now->dayOfWeek] . ', ngày ' . $now->format('d/m/Y');
+        $time = $now->format('H:i:s');
+
+        if ($asksTime && $asksDate) {
+            return "Hiện tại là {$time}, {$date} (giờ Việt Nam).";
+        }
+
+        if ($asksTime) {
+            return "Bây giờ là {$time}, {$date} (giờ Việt Nam).";
+        }
+
+        return "Hôm nay là {$date} (giờ Việt Nam).";
     }
 
     private function buildHistoryContext(array $history): string
