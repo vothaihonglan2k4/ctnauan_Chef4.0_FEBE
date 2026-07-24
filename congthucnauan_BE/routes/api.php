@@ -269,6 +269,13 @@ Route::prefix('v1/manager')->middleware(['auth:sanctum', 'manager'])->group(func
     Route::delete('/courses/{id}', [ManagerCourseController::class, 'destroy']);
     Route::put('/courses/{id}/status', [ManagerCourseController::class, 'updateStatus']);
     Route::get('/courses/classrooms', [ManagerCourseController::class, 'classrooms']);
+
+    // Lesson Management (nested under courses)
+    Route::get('/courses/{courseId}/lessons', [ManagerCourseController::class, 'getLessons']);
+    Route::post('/courses/{courseId}/lessons', [ManagerCourseController::class, 'storeLesson']);
+    Route::match(['PUT', 'POST', 'PATCH'], '/courses/{courseId}/lessons/{lessonId}', [ManagerCourseController::class, 'updateLesson']);
+    Route::delete('/courses/{courseId}/lessons/{lessonId}', [ManagerCourseController::class, 'destroyLesson']);
+    Route::put('/courses/{courseId}/lessons/reorder', [ManagerCourseController::class, 'reorderLessons']);
     
     // Reports
     Route::get('/reports/overview', [ManagerReportController::class, 'overview']);

@@ -69,6 +69,7 @@ import ManagerContactsPage from './Pages/Manager/ManagerContactsPage';
 import ManagerReportsPage from './Pages/Manager/ManagerReportsPage';
 import ManagerUsersPage from './Pages/Manager/ManagerUsersPage';
 import ManagerCategoriesPage from './Pages/Manager/ManagerCategoriesPage';
+import ManagerLessonManagePage from './Pages/Manager/ManagerLessonManagePage';
 
 function App() {
   return (
@@ -151,6 +152,7 @@ function App() {
             <Route index element={<ManagerDashboardPage />} />
             <Route path="recipes" element={<ManagerRecipesPage />} />
             <Route path="courses" element={<ManagerCoursesPage />} />
+            <Route path="courses/:courseId/lessons" element={<ManagerLessonManagePage />} />
             <Route path="contacts" element={<ManagerContactsPage />} />
             <Route path="reports" element={<ManagerReportsPage />} />
             <Route path="users" element={<ManagerUsersPage />} />

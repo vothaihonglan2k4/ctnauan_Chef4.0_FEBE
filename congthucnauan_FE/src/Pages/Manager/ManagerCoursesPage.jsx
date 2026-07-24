@@ -154,6 +154,12 @@ export default function ManagerCoursesPage() {
                                                 <div className="dropdown">
                                                     <button className="btn btn-sm btn-outline-warning dropdown-toggle" data-bs-toggle="dropdown"><i className="fas fa-cog"></i></button>
                                                     <ul className="dropdown-menu dropdown-menu-end">
+                                                        <li>
+                                                            <Link to={`/manager/courses/${course.id}/lessons`} className="dropdown-item text-info">
+                                                                <i className="fas fa-book-open me-2"></i>Quản lý bài học
+                                                            </Link>
+                                                        </li>
+                                                        <li><hr className="dropdown-divider"/></li>
                                                         {course.status !== 'published' && <li><button className="dropdown-item text-success" onClick={() => handleUpdateStatus(course.id, 'published', course.title)}><i className="fas fa-play me-2"></i>Xuất bản</button></li>}
                                                         {course.status !== 'draft' && <li><button className="dropdown-item text-warning" onClick={() => handleUpdateStatus(course.id, 'draft', course.title)}><i className="fas fa-edit me-2"></i>Chuyển nháp</button></li>}
                                                         {course.status !== 'archived' && <li><button className="dropdown-item text-secondary" onClick={() => handleUpdateStatus(course.id, 'archived', course.title)}><i className="fas fa-archive me-2"></i>Lưu trữ</button></li>}
