@@ -1,4 +1,4 @@
-﻿import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 
 // Layout
@@ -73,26 +73,26 @@ import ManagerLessonManagePage from './Pages/Manager/ManagerLessonManagePage';
 
 function App() {
   return (
-    // 2.1) BrowserRouter: bá»c toÃ n bá»™ app Ä‘á»ƒ kÃ­ch hoáº¡t routing
+    // 2.1) BrowserRouter: bọc toàn bộ app để kích hoạt routing
     <BrowserRouter>
       <AuthProvider>
-        {/* 2.2) Routes: chá»©a táº¥t cáº£ cÃ¡c Route, chá»‰ render Route khá»›p vá»›i URL */}
+        {/* 2.2) Routes: chứa tất cả các Route, chỉ render Route khớp với URL */}
         <Routes>
 
-          {/* ===== MAIN ROUTES (cÃ³ Navbar + Footer) ===== */}
-          {/* Route cha dÃ¹ng Layout (Navbar + Footer + <Outlet/>) */}
+          {/* ===== MAIN ROUTES (có Navbar + Footer) ===== */}
+          {/* Route cha dùng Layout (Navbar + Footer + <Outlet/>) */}
           <Route path="/" element={<Layout />}>
-            {/* index: tÆ°Æ¡ng Ä‘Æ°Æ¡ng exact - trang chá»§ "/" */}
+            {/* index: tương đương exact - trang chủ "/" */}
             <Route index element={<HomePage />} />
 
-            {/* path: Ã¡nh xáº¡ URL -> Component */}
+            {/* path: ánh xạ URL -> Component */}
             <Route path="about" element={<AboutPage />} />
             <Route path="contact" element={<ContactPage />} />
 
             {/* Forum routes */}
             <Route path="forum" element={<ForumPage />} />
             <Route path="forum/create" element={<ForumCreatePostPage />} />
-            {/* 2.6) Match - :id lÃ  tham sá»‘ Ä‘á»™ng láº¥y qua useParams() */}
+            {/* 2.6) Match - :id là tham số động lấy qua useParams() */}
             <Route path="forum/:id" element={<ForumDetailPage />} />
             <Route path="forum/tag/:tagName" element={<ForumTagPage />} />
 
@@ -120,7 +120,7 @@ function App() {
             {/* Course routes */}
             <Route path="courses" element={<CoursesPage />} />
             <Route path="courses/:id" element={<CourseDetailPage />} />
-            {/* :lessonId? = tham sá»‘ tÃ¹y chá»n */}
+            {/* :lessonId? = tham số tùy chọn */}
             <Route path="courses/learn/:courseId/:lessonId" element={<CourseLearnPage />} />
             <Route path="courses/learn/:courseId" element={<CourseLearnPage />} />
             <Route path="courses/:id/checkout" element={<CourseCheckoutPage />} />
@@ -132,7 +132,7 @@ function App() {
             <Route path="register" element={<RegisterPage />} />
           </Route>
 
-          {/* ===== ADMIN ROUTES (cÃ³ AdminLayout riÃªng) ===== */}
+          {/* ===== ADMIN ROUTES (có AdminLayout riêng) ===== */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboardPage />} />
             <Route path="users" element={<AdminUsersPage />} />
@@ -147,7 +147,7 @@ function App() {
             <Route path="manageComments" element={<AdminManageCommentsPage />} />
           </Route>
 
-          {/* ===== MANAGER ROUTES (cÃ³ ManagerLayout riÃªng) ===== */}
+          {/* ===== MANAGER ROUTES (có ManagerLayout riêng) ===== */}
           <Route path="/manager" element={<ManagerLayout />}>
             <Route index element={<ManagerDashboardPage />} />
             <Route path="recipes" element={<ManagerRecipesPage />} />
@@ -166,5 +166,3 @@ function App() {
 }
 
 export default App;
-
-

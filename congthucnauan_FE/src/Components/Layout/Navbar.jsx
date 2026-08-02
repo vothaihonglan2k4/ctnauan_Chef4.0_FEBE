@@ -11,6 +11,8 @@ export default function Navbar() {
         e.preventDefault();
         if (searchTerm.trim()) {
             navigate(`/recipes/search?term=${encodeURIComponent(searchTerm)}`);
+        } else {
+            navigate('/recipes');
         }
     };
 
